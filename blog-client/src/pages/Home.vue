@@ -14,10 +14,14 @@
 <script>
 import { ref, onMounted } from 'vue'
 import usePosts from '../api/usePosts'
+import {useStore} from 'vuex'
 
 export default {
   setup() {
     const { posts, fetchPosts } = usePosts()
+    const store = useStore()
+    console.log(store.getters.authenticated)
+
     onMounted(fetchPosts)
     return {
       posts
