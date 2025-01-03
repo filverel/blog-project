@@ -5,6 +5,7 @@ import router from './router'
 import axios from 'axios'
 
 axios.defaults.baseURL = 'http://blog-project.test'
+axios.defaults.withCredentials = true
 
 createApp(App)
   .use(router)
