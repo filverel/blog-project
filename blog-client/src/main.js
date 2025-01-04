@@ -7,8 +7,12 @@ import axios from 'axios'
 
 axios.defaults.baseURL = 'http://blog-project.test'
 axios.defaults.withCredentials = true
+axios.defaults.withXSRFToken = true
 
-createApp(App)
-  .use(router)
-  .use(store)
-  .mount('#app')
+store.dispatch('authenticate').then(() => {
+  createApp(App)
+    .use(router)
+    .use(store)
+    .mount('#app')
+})
+
