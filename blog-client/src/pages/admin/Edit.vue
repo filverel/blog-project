@@ -1,9 +1,12 @@
 <template>
   <div>
-    <div>
-      <textarea v-model="post.title" class="w-full text-center text-4xl lg:text-6xl leading-10 font-extrabold tracking-tight text-gray-900 border-none focus:ring-0 resize-none p-0">
-      </textarea>
-    </div>
+    <ResizeTextarea>
+      <template v-slot:default="{ resize }">
+        {{ greeting.value }}
+        <textarea v-model="post.title" @input="resize" class="w-full text-center text-4xl lg:text-6xl leading-10 font-extrabold tracking-tight text-gray-900 border-none focus:ring-0 resize-none p-0">
+        </textarea>
+      </template>
+    </ResizeTextarea>
   </div>
 </template>
 
@@ -11,8 +14,12 @@
 import useAdminPosts from '../../api/useAdminPosts'
 import { onMounted, watch } from 'vue'
 import _ from 'lodash' // cloneDeep below and debounce are imported from here
+import ResizeTextarea from "../../comonents/ResizeTextarea.vue";
 
 export default {
+  components: {
+    ResizeTextarea
+  },
   props: {
     slug: {
       required: true,
