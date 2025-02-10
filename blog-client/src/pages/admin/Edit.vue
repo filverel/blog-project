@@ -3,7 +3,7 @@
     <div class="absolute w-full left-0 top-0 p-6 flex justify-between items-center space-x-6">
       <div class="flex-grow flex items-center">
         <span class="mr-1">/</span>
-        <input type="text" class="p-0 border-none focus:ring-0 w-full" v-model="post.slug">
+        <input type="text" class="p-0 border-none focus:ring-0 w-full" v-model="post.slug" spellcheck="false" @click="$event.target.select()">
       </div>
       <div class="flex items-center space-x-6">
         <div>
@@ -15,9 +15,9 @@
           </button>
         </div>
         <div>
-          <router-link :to="{ name: 'post', params: { slug: post.slug } }" class="text-sm font-medium text-gray-800">
-            Preview
-          </router-link>
+<!--          <router-link :to="{ name: 'post', params: { slug: post.slug } }" class="text-sm font-medium text-gray-800">-->
+<!--            Preview-->
+<!--          </router-link>-->
         </div>
       </div>
     </div>
@@ -33,16 +33,17 @@
 
 <script>
 import useAdminPosts from '../../api/useAdminPosts'
-import { onMounted, watch } from 'vue'
+import { onMounted, watch, watchEffect } from 'vue'
 import _ from 'lodash' // cloneDeep below and debounce are imported from here
 import ResizeTextarea from "../../comonents/ResizeTextarea.vue";
+import slugify from "slugify";
 
 export default {
   components: {
     ResizeTextarea
   },
   props: {
-    slug: {
+    uuid: {
       required: true,
       type: String
     }
@@ -50,11 +51,22 @@ export default {
   setup(props)  {
     const { post, fetchPost, patchPost } = useAdminPosts()
     const updatePost = async () => {
-      await patchPost(props.slug)
+      await patchPost(props.uuid)
+    }
+
+    const replaceSlug = () => {
+      const slug = post.value.slug
+      if (slug.charAt(slug.length - 1) === ' ') {
+        return
+      }
+      post.value.slug = slug ? slugify(slug, { strict: true }) : post.value.uuid
     }
 
     onMounted(async () => {
-      await fetchPost(props.slug)
+      await fetchPost(props.uuid)
+      watchEffect(() => {
+        replaceSlug()
+      })
       watch(() => _.cloneDeep(post), _.debounce(() => {
         updatePost()
       }, 500))
