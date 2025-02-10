@@ -19,8 +19,9 @@ class PostPatchController extends Controller
             'title' => 'required',
             'teaser' => 'nullable',
             'body' => 'nullable',
+            'slug' => 'required|string|unique:posts,slug,' . $post->id,
             'published' => 'boolean',
         ]);
-        $post->update($request->only('title', 'teaser', 'body', 'published'));
+        $post->update($request->only('title', 'teaser', 'body', 'published', 'slug'));
     }
 }
