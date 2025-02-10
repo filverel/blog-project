@@ -28,6 +28,8 @@
         </template>
       </ResizeTextarea>
     </div>
+    <!-- Editor -->
+    <Editor v-model="post.body" class="mt-16"/>
   </div>
 </template>
 
@@ -35,12 +37,14 @@
 import useAdminPosts from '../../api/useAdminPosts'
 import { onMounted, watch, watchEffect } from 'vue'
 import _ from 'lodash' // cloneDeep below and debounce are imported from here
-import ResizeTextarea from "../../comonents/ResizeTextarea.vue";
+import ResizeTextarea from '../../comonents/ResizeTextarea.vue'
+import Editor from '../../comonents/Editor.vue'
 import slugify from "slugify";
 
 export default {
   components: {
-    ResizeTextarea
+    ResizeTextarea,
+    Editor
   },
   props: {
     uuid: {
