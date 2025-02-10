@@ -10,8 +10,8 @@
           <span class="text-sm text-gray-500">Autosaved</span>
         </div>
         <div>
-          <button class="text-sm font-medium">
-            Published
+          <button @click="post.published = !post.published" class="text-sm font-medium" :class="{ 'text-pink-500': post.published }">
+            {{ !post.published ? 'Publish' : 'Unpublish' }}
           </button>
         </div>
         <div>
