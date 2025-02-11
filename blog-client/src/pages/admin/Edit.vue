@@ -28,8 +28,13 @@
         </template>
       </ResizeTextarea>
     </div>
-    <!-- Editor -->
-    <Editor v-model="post.body" class="mt-16"/>
+
+    <!-- we can use double vue models in Vue3 provided they're properly named -->
+    <Editor
+        v-model:modelValue="post.body"
+        v-model:teaserValue="post.teaser"
+        class="mt-16"
+    />
   </div>
 </template>
 
