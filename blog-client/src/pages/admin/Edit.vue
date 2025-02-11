@@ -6,9 +6,11 @@
         <input type="text" class="p-0 border-none focus:ring-0 w-full" v-model="post.slug" spellcheck="false" @click="$event.target.select()">
       </div>
       <div class="flex items-center space-x-6">
-        <div>
-          <span class="text-sm text-gray-500">{{ lastSaved.fromNow() }}</span>
-        </div>
+        <RelativeTime :date="lastSaved" v-if="lastSaved">
+          <template v-slot:default="{ fromNow }" >
+            <span class="text-sm text-gray-500">{{ fromNow }}</span>
+          </template>
+        </RelativeTime>
         <div>
           <button @click="post.published = !post.published" class="text-sm font-medium" :class="{ 'text-pink-500': post.published }">
             {{ !post.published ? 'Publish' : 'Unpublish' }}
@@ -43,16 +45,16 @@ import useAdminPosts from '../../api/useAdminPosts'
 import { onMounted, watch, watchEffect, ref } from 'vue'
 import _ from 'lodash' // cloneDeep below and debounce are imported from here
 import ResizeTextarea from '../../comonents/ResizeTextarea.vue'
+import RelativeTime from '../../comonents/RelativeTime.vue'
 import Editor from '../../comonents/Editor.vue'
 import slugify from "slugify";
 import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
-dayjs.extend(relativeTime)
 
 export default {
   components: {
     ResizeTextarea,
-    Editor
+    Editor,
+    RelativeTime
   },
   props: {
     uuid: {
